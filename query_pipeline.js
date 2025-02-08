@@ -11,7 +11,7 @@ const users = await User.aggregate([
 // [{ "_id": 1, "name": "Alice", "role": "admin" },
 // { "_id": 2, "name": "Bob", "role": "manager" },
 // { "_id": 4, "name": "David", "role": "admin" }]
-___
+
 // [{ "_id": 101, "name": "Laptop", "tags": ["electronics", "gadget"] },
 // { "_id": 102, "name": "Vacuum Cleaner", "tags": ["home-appliance"] },
 // { "_id": 103, "name": "Smartphone", "tags": ["electronics", "mobile"] }]
@@ -21,7 +21,7 @@ const products = await Product.aggregate([
 ]);
 // [{ "_id": 101, "name": "Laptop", "tags": ["electronics", "gadget"] },
 // { "_id": 103, "name": "Smartphone", "tags": ["electronics", "mobile"]}]
-
+______________________________________________________________________
 2.$or
 // [{ "_id": 1, "name": "Alice", "role": "admin" },
 // { "_id": 2, "name": "Bob", "role": "manager" },
@@ -33,7 +33,7 @@ db.users.aggregate([
 //[{ "_id": 1, "name": "Alice", "role": "admin" },
 //{ "_id": 3, "name": "Charlie", "role": "employee" },
 //{ "_id": 4, "name": "David", "role": "admin" }]  
-
+_____________________________________________________________________
 3.$and
 // [{ "_id": 1, "name": "Alice", "role": "admin", "age": 30 },
 // { "_id": 2, "name": "Bob", "role": "manager", "age": 35 },
@@ -43,7 +43,7 @@ db.users.aggregate([
     { $match: {$and: [{ role: "admin" },{ age: { $gt: 30 } }]}}
 ]);  
 // [{ "_id": 4, "name": "David", "role": "admin", "age": 40 }]
-
+____________________________________________________________________
 $and $or $in mix that three query pipeline
 [
   { "_id": 1, "name": "Alice", "role": "admin", "age": 30 },
