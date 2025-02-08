@@ -44,3 +44,27 @@ db.users.aggregate([
 ]);  
 // [{ "_id": 4, "name": "David", "role": "admin", "age": 40 }]
 
+$and $or $in mix that three query pipeline
+[
+  { "_id": 1, "name": "Alice", "role": "admin", "age": 30 },
+  { "_id": 2, "name": "Bob", "role": "editor", "age": 25 },
+  { "_id": 3, "name": "Charlie", "role": "admin", "age": 35 },
+  { "_id": 4, "name": "David", "role": "user", "age": 28 },
+  { "_id": 5, "name": "Eve", "role": "user", "age": 32 }
+]
+db.users.aggregate([
+  {
+    $match: {
+      $and: [
+        { role: { $in: ["admin", "editor"] } },  // Role must be "admin" or "editor"
+        { age: { $in: [30, 35] } }  // Age must be 30 or 35
+      ]
+    }
+  }
+// ]);
+// [{ "_id": 1, "name": "Alice", "role": "admin", "age": 30 },
+// { "_id": 3, "name": "Charlie", "role": "admin", "age": 35 }]
+
+  
+
+
