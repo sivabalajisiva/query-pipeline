@@ -70,4 +70,42 @@ db.users.aggregate([
 
   
 
+______________________________________________________
+4.$expr   (compare thwe documends inside fields)
+!,[{ "_id": 1, "totalPrice": 500, "discountedPrice": 450 },
+  { "_id": 2, "totalPrice": 1000, "discountedPrice": 1000 },
+  { "_id": 3, "totalPrice": 750, "discountedPrice": 700 }]
+const discountedOrders = await Order.aggregate([
+  {
+    $match: {
+      $expr: { $lt: ["$discountedPrice", "$totalPrice"] } // discountedPrice < totalPrice
+    }
+  }
+]);
+// [{ "_id": 1, "totalPrice": 500, "discountedPrice": 450 },
+// { "_id": 3, "totalPrice": 750, "discountedPrice": 700 }]
 
+!!,event starting age vita enting athigama erukanum?
+{"_id": 1,"name": "Event 1","startDate": "2025-02-01T10:00:00Z","endDate": "2025-02-01T12:00:00Z"},
+{"_id": 2,"name": "Event 2","startDate": "2025-02-01T10:00:00Z","endDate": "2025-02-01T09:00:00Z"}
+ const events = await Event.aggregate([
+      {
+        $match: {
+          $expr: { $gt: ["$endDate", "$startDate"] } // Compare endDate > startDate
+        }
+      }
+    ]);  
+// [ { "_id": 1,"name": "Event 1", "startDate": "2025-02-01T10:00:00Z", "endDate": "2025-02-01T12:00:00Z"}]
+
+!!!,using $eq query which price and discountprice equal value only show?
+{"_id": 1,"name": "Product 1","price": 100,"discountPrice": 100},
+{"_id": 2,"name": "Product 2","price": 150,"discountPrice": 130}
+const equalPriceProducts = await Product.aggregate([
+    {
+       $match: {
+        $expr: { $eq: ["$price", "$discountPrice"] } // Compare price == discountPrice
+      }
+    }
+    ]);
+// [{ "_id": 1,"name": "Product 1","price": 100,"discountPrice": 100}]
+____________________________________________________________
