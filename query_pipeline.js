@@ -1,48 +1,51 @@
-// 1.$in
-// // [{ "_id": 1, "name": "Alice", "role": "admin" },
-// // { "_id": 2, "name": "Bob", "role": "manager" },
-// // { "_id": 3, "name": "Charlie", "role": "employee" },
-// // { "_id": 4, "name": "David", "role": "admin" }]
+1.$in
+// [{ "_id": 1, "name": "Alice", "role": "admin" },
+// { "_id": 2, "name": "Bob", "role": "manager" },
+// { "_id": 3, "name": "Charlie", "role": "employee" },
+// { "_id": 4, "name": "David", "role": "admin" }]
 
-// const roles = ["admin", "manager"];
-// const users = await User.aggregate([
-//   {$match: {role: { $in: roles }}} // Only include users with "admin" or "manager" roles
-// ]);
-// // [{ "_id": 1, "name": "Alice", "role": "admin" },
-// // { "_id": 2, "name": "Bob", "role": "manager" },
-// // { "_id": 4, "name": "David", "role": "admin" }]
-// ___
-// // [{ "_id": 101, "name": "Laptop", "tags": ["electronics", "gadget"] },
-// // { "_id": 102, "name": "Vacuum Cleaner", "tags": ["home-appliance"] },
-// // { "_id": 103, "name": "Smartphone", "tags": ["electronics", "mobile"] }]
-// const tagsToFind = ["electronics", "mobile"];
-// const products = await Product.aggregate([
-//   {$match: { tags: { $in: tagsToFind }}} // Match products with at least one of these tags
-// ]);
-// // [{ "_id": 101, "name": "Laptop", "tags": ["electronics", "gadget"] },
-// // { "_id": 103, "name": "Smartphone", "tags": ["electronics", "mobile"]}]
+const roles = ["admin", "manager"];
+const users = await User.aggregate([
+  {$match: {role: { $in: roles }}} // Only include users with "admin" or "manager" roles
+]);
+// [{ "_id": 1, "name": "Alice", "role": "admin" },
+// { "_id": 2, "name": "Bob", "role": "manager" },
+// { "_id": 4, "name": "David", "role": "admin" }]
+___
+// [{ "_id": 101, "name": "Laptop", "tags": ["electronics", "gadget"] },
+// { "_id": 102, "name": "Vacuum Cleaner", "tags": ["home-appliance"] },
+// { "_id": 103, "name": "Smartphone", "tags": ["electronics", "mobile"] }]
+const tagsToFind = ["electronics", "mobile"];
+const products = await Product.aggregate([
+  {$match: { tags: { $in: tagsToFind }}} // Match products with at least one of these tags
+]);
+// [{ "_id": 101, "name": "Laptop", "tags": ["electronics", "gadget"] },
+// { "_id": 103, "name": "Smartphone", "tags": ["electronics", "mobile"]}]
 
-// 2.$or
-// // [{ "_id": 1, "name": "Alice", "role": "admin" },
-// // { "_id": 2, "name": "Bob", "role": "manager" },
-// // { "_id": 3, "name": "Charlie", "role": "employee" },
-// // { "_id": 4, "name": "David", "role": "admin" }]
-// db.users.aggregate([
-//     { $match: { $or: [ { role: "admin" },{ _id: { $gt: 2 }}]}}
-//   ]);
-// //[{ "_id": 1, "name": "Alice", "role": "admin" },
-// //{ "_id": 3, "name": "Charlie", "role": "employee" },
-// //{ "_id": 4, "name": "David", "role": "admin" }]  
+2.$or
+// [{ "_id": 1, "name": "Alice", "role": "admin" },
+// { "_id": 2, "name": "Bob", "role": "manager" },
+// { "_id": 3, "name": "Charlie", "role": "employee" },
+// { "_id": 4, "name": "David", "role": "admin" }]
+db.users.aggregate([
+    { $match: { $or: [ { role: "admin" },{ _id: { $gt: 2 }}]}}
+  ]);
+//[{ "_id": 1, "name": "Alice", "role": "admin" },
+//{ "_id": 3, "name": "Charlie", "role": "employee" },
+//{ "_id": 4, "name": "David", "role": "admin" }]  
 
-// 3.$and
-// // [{ "_id": 1, "name": "Alice", "role": "admin", "age": 30 },
-// // { "_id": 2, "name": "Bob", "role": "manager", "age": 35 },
-// // { "_id": 3, "name": "Charlie", "role": "employee", "age": 25 },
-// // { "_id": 4, "name": "David", "role": "admin", "age": 40 }]
-// db.users.aggregate([
-//     { $match: {$and: [{ role: "admin" },{ age: { $gt: 30 } }]}}
-// ]);  
-// // [{ "_id": 4, "name": "David", "role": "admin", "age": 40 }]
+3.$and
+// [{ "_id": 1, "name": "Alice", "role": "admin", "age": 30 },
+// { "_id": 2, "name": "Bob", "role": "manager", "age": 35 },
+// { "_id": 3, "name": "Charlie", "role": "employee", "age": 25 },
+// { "_id": 4, "name": "David", "role": "admin", "age": 40 }]
+db.users.aggregate([
+    { $match: {$and: [{ role: "admin" },{ age: { $gt: 30 } }]}}
+]);  
+// [{ "_id": 4, "name": "David", "role": "admin", "age": 40 }]
+
+
+
 
 Why Use Curly Braces in MongoDB Pipelines?
 
