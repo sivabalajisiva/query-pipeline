@@ -108,4 +108,6 @@ const equalPriceProducts = await Product.aggregate([
     }
     ]);
 // [{ "_id": 1,"name": "Product 1","price": 100,"discountPrice": 100}]
+!V,{"$expr": { "$eq": [{ "$add": ["$price", "$tax"] }, "$total"] }}
+
 ____________________________________________________________
