@@ -1,4 +1,4 @@
-1.$in
+d1.$in
 [{ "_id": 1, "name": "Alice", "role": "admin" },
 { "_id": 2, "name": "Bob", "role": "manager" },
 { "_id": 3, "name": "Charlie", "role": "employee" },
@@ -109,5 +109,5 @@ const equalPriceProducts = await Product.aggregate([
     ]);
 // [{ "_id": 1,"name": "Product 1","price": 100,"discountPrice": 100}]
 !V,{"$expr": { "$eq": [{ "$add": ["$price", "$tax"] }, "$total"] }}
-
+V, { $match: {$expr: { $eq: ["$status", "active"] }}}
 ____________________________________________________________
