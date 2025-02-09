@@ -312,57 +312,23 @@ db.products.find({
 })
 // [{ "_id": 1, "name": "Laptop", "costPrice": 800, "sellingPrice": 1000 },
 //   { "_id": 3, "name": "Tablet", "costPrice": 300, "sellingPrice": 400 }]
-!V, Find Orders Where totalAmount = paidAmount (Fully Paid Orders)
-// [{ "_id": 1, "customer": "Alice", "totalAmount": 1000, "paidAmount": 1000 },
-//   { "_id": 2, "customer": "Bob", "totalAmount": 500, "paidAmount": 300 },
-//   { "_id": 3, "customer": "Charlie", "totalAmount": 700, "paidAmount": 700 }]
+!V,Find Orders Where totalAmount is Less Than discount
+// [{ "_id": 1, "customer": "Alice", "totalAmount": 600, "discount": 100 },
+//   { "_id": 2, "customer": "Bob", "totalAmount": 300, "discount": 400 },
+//   { "_id": 3, "customer": "Charlie", "totalAmount": 500, "discount": 200 }]
 db.orders.find({
-  $expr: { $eq: ["$totalAmount", "$paidAmount"] }
+  $expr: { $lt: ["$totalAmount", "$discount"] }
 })
-// [{ "_id": 1, "customer": "Alice", "totalAmount": 1000, "paidAmount": 1000 },
-//   { "_id": 3, "customer": "Charlie", "totalAmount": 700, "paidAmount": 700 }]
-V,
+// [{ "_id": 2, "customer": "Bob", "totalAmount": 300, "discount": 400 }]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-  
-
-
-  
-1,quantity and price sa multiple panni total amount ah sollum
+______________________________________________________________________
+6,$project: Shape Output Documents
+// Include only the name and salary fields while renaming salary to income.
+// dp la erukura name namma usecase ku ethamathiri rename pannikalam
+  db.employees.aggregate([
+  { $project: { _id: 0, name: 1, income: "$salary" } }
+])
+!,quantity and price sa multiple panni total amount ah sollum
 // [ { "_id": 1, "product": "A", "quantity": 10, "price": 5 },
 //   { "_id": 2, "product": "B", "quantity": 5, "price": 20 },
 //   { "_id": 3, "product": "C", "quantity": 8, "price": 15 }]
@@ -379,6 +345,35 @@ db.orders.aggregate([
 // [ { "_id": 1, "product": "A", "total": 50 },
 //   { "_id": 2, "product": "B", "total": 100 },
 //   { "_id": 3, "product": "C", "total": 120 } ]
+__________________________________________________________________
+7,$unset is used for removing documents in dp totally
+   const removedata=await reffer.updateOne(
+      { refferancename:"siva"  }, // Find the user by their ID
+      { $unset: { leveluser: "" } } // Remove the 'leveluser' field totally in documents
+    )
+ $set set method is used for leveluser data erunjuna atha emty stringa mathirum null kuta vaikalam 
+  const removedata=await reffer.updateOne(
+        { refferancename:"siva"  }, // Find the user by their ID
+        { $set: { leveluser: "" } } // Remove the 'profilePicture' field
+      )
+__________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -------------------------------------------------
 2, how many category user select this category?
   
@@ -511,12 +506,7 @@ db.products.aggregate([
 //   ]
 // }
 ------------------------------------------------------
-8,$project: Shape Output Documents
-// Include only the name and salary fields while renaming salary to income.
-// dp la erukura name namma usecase ku ethamathiri rename pannikalam
-  db.employees.aggregate([
-  { $project: { _id: 0, name: 1, income: "$salary" } }
-])
+8,
 ------------------------------------------------------
 9,$sortByCount
 // The $sortByCount stage in MongoDB's aggregation framework is a convenient way to group documents
