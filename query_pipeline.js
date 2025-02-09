@@ -1,7 +1,3 @@
-
-
-
-
 Why Use Curly Braces in MongoDB Pipelines?
 
 1,Curly braces {} define key-value pairs.
@@ -278,7 +274,88 @@ db.sales.aggregate([
 ])
 // [ { "_id": "Electronics", "totalQuantity": 10 }]
 ------------------------------------------------------
+5,$expr and $eq
+  The $expr operator in MongoDB allows you to use aggregation expressions inside a query.
+  This is useful when you need to compare fields within the same document or apply conditions that involve expressions.
 
+  The $eq operator checks if two values are equal. It returns true if they are equal, 
+  and false otherwise. When combined with $expr, it becomes a powerful tool for comparing fields,
+  expressions, or constants.
+  
+!,// [ { "_id": 1, "name": "Phone", "price": 500, "discountedPrice": 500 },
+//   { "_id": 2, "name": "Laptop", "price": 1200, "discountedPrice": 1000 },
+//   { "_id": 3, "name": "Tablet", "price": 300, "discountedPrice": 300 }]
+db.products.find({
+  $expr: { $eq: ["$price", "$discountedPrice"] }
+})
+// [{ "_id": 1, "name": "Phone", "price": 500, "discountedPrice": 500 },
+// { "_id": 3, "name": "Tablet", "price": 300, "discountedPrice": 300 }]
+!!,find employees whose salary is greater than their bonus?
+// [{ "_id": 1, "name": "Alice", "salary": 50000, "bonus": 5000 },
+//   { "_id": 2, "name": "Bob", "salary": 40000, "bonus": 45000 },
+//   { "_id": 3, "name": "Charlie", "salary": 60000, "bonus": 20000 }]
+db.employees.find({
+  $expr: {
+    $gt: ["$salary", "$bonus"]
+  }
+})    
+// [{ "_id": 1, "name": "Alice", "salary": 50000, "bonus": 5000 },
+//   { "_id": 3, "name": "Charlie", "salary": 60000, "bonus": 20000 }]
+!!!, Find Products Where sellingPrice is Greater Than costPrice
+// [{ "_id": 1, "name": "Laptop", "costPrice": 800, "sellingPrice": 1000 },
+//   { "_id": 2, "name": "Phone", "costPrice": 500, "sellingPrice": 450 },
+//   { "_id": 3, "name": "Tablet", "costPrice": 300, "sellingPrice": 400 }]
+db.products.find({
+  $expr: {
+    $gt: ["$sellingPrice", "$costPrice"]
+  }
+})
+// [{ "_id": 1, "name": "Laptop", "costPrice": 800, "sellingPrice": 1000 },
+//   { "_id": 3, "name": "Tablet", "costPrice": 300, "sellingPrice": 400 }]
+!V, Find Orders Where totalAmount = paidAmount (Fully Paid Orders)
+// [{ "_id": 1, "customer": "Alice", "totalAmount": 1000, "paidAmount": 1000 },
+//   { "_id": 2, "customer": "Bob", "totalAmount": 500, "paidAmount": 300 },
+//   { "_id": 3, "customer": "Charlie", "totalAmount": 700, "paidAmount": 700 }]
+db.orders.find({
+  $expr: { $eq: ["$totalAmount", "$paidAmount"] }
+})
+// [{ "_id": 1, "customer": "Alice", "totalAmount": 1000, "paidAmount": 1000 },
+//   { "_id": 3, "customer": "Charlie", "totalAmount": 700, "paidAmount": 700 }]
+V,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
   
@@ -489,23 +566,7 @@ db.orders.aggregate([
 //   { "_id": 2, "orderYear": 2024 },
 //   { "_id": 3, "orderYear": 2023 }]
 ---------------------------------------------------------
-12,$expr and $eq
-  in MongoDB The $expr operator allows you to use aggregation expressions within a $match stage.
-  This enables field comparisons, calculations, and complex queries directly within the query language.
 
-  The $eq operator checks if two values are equal. It returns true if they are equal, 
-  and false otherwise. When combined with $expr, it becomes a powerful tool for comparing fields,
-  expressions, or constants.
-  
-// [ { "_id": 1, "name": "Phone", "price": 500, "discountedPrice": 500 },
-//   { "_id": 2, "name": "Laptop", "price": 1200, "discountedPrice": 1000 },
-//   { "_id": 3, "name": "Tablet", "price": 300, "discountedPrice": 300 }]
-db.products.find({
-  $expr: { $eq: ["$price", "$discountedPrice"] }
-})
-  
-  // [{ "_id": 1, "name": "Phone", "price": 500, "discountedPrice": 500 },
-  // { "_id": 3, "name": "Tablet", "price": 300, "discountedPrice": 300 }]
 ---------------------------------------------------------
 
 
