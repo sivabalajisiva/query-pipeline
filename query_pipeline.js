@@ -111,3 +111,18 @@ const equalPriceProducts = await Product.aggregate([
 !V,{"$expr": { "$eq": [{ "$add": ["$price", "$tax"] }, "$total"] }}
 V, { $match: {$expr: { $eq: ["$status", "active"] }}}
 ____________________________________________________________
+5,$project 
+!,db.orders.aggregate([
+  {$project:
+    {totalAmount: { $multiply: ["$quantity", "$price"] },
+      orderDate: 1
+    }
+  }
+])
+!!,db.users.aggregate([
+  {$project: {
+      name: 1,
+      age: 1,
+      isAdult: { $gte: ["$age", 18] }
+  }}
+])
