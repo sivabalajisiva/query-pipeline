@@ -443,7 +443,12 @@ db.scores.aggregate([
 //   {_id: 2, student: "Ryan", homework: [ 5, 6, 5 ],quiz: [ 8, 8 ],  extraCredit: 8,
 //   totalHomework: 16, totalQuiz: 16,  totalScore: 40}]
 -----------------------------------------------------
-6, "$bucket" Age Group Categorization
+6, "$bucket" The $bucket stage is used to group documents into specified ranges (buckets) based on a field's value
+1️⃣ How default Works
+When a document’s groupBy field value does not match any range in boundaries, it will be placed into the default bucket.
+If default is not specified, values that don't match any range are excluded from the results.
+  
+!,Age Group Categorization
 // [{ "_id": 1, "name": "John", "age": 15 },
 //   { "_id": 2, "name": "Mary", "age": 25 },
 //   { "_id": 3, "name": "Alex", "age": 35 },
