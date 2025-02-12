@@ -4,7 +4,7 @@ Why Use Curly Braces in MongoDB Pipelines?
 Each stage in an aggregation pipeline is an object.
   
 2,Pipeline Stages are Objects
-Each stage in the pipeline starts with a stage operator (like $match, $group, $project), followed by its options inside curly braces.
+Each stage in the pipeline starts with a stage operator (like $match, $group, $project, $sord) , followed by its options inside curly braces.
 
 db.collection.aggregate([
   { $match: { status: "active" } },  // Stage 1: Filter documents (outer {} for stage, inner {} for filter)
