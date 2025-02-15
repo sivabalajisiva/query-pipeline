@@ -357,6 +357,48 @@ __________________________________________________________________
         { $set: { leveluser: "" } } // Remove the 'profilePicture' field
       )
 __________________________________________________________________
+8, $densify️ 
+   When to Use $densify?
+   Time-Series Data – Fill in missing dates.
+   Numerical Sequences – Fill missing values in ordered data.
+   Analytics & Reporting – Ensure continuous data for analysis.
+   $densify fills in missing data points in a sequence.Works with dates and numbers.
+
+!, Missing date 2024-01-02 is added but with null sales.
+// [{ "date": ISODate("2024-01-01"), "sales": 100 },
+//   { "date": ISODate("2024-01-03"), "sales": 200 }]
+db.sales.aggregate([
+  {
+    $densify: {
+      field: "date",
+      range: {
+        step: 1,        // Step interval (1 day)
+        unit: "day",    // Time unit
+        bounds: "full"  // Fills missing values across full range
+      }
+    }
+  }
+]);
+// [ { "date": ISODate("2024-01-01"), "sales": 100 },
+//   { "date": ISODate("2024-01-02") },  // New entry (sales missing)
+//   { "date": ISODate("2024-01-03"), "sales": 200 }]
+!!,Filling Missing Numeric Values ?  Numbers 2 and 3 are added with null values.
+// [ { "x": 1, "value": 10 },
+//   { "x": 4, "value": 40 }]
+db.numbers.aggregate([
+  {
+    $densify: {
+      field: "x",
+      range: { step: 1, bounds: "full" }
+    }
+  }
+]);
+// [ { "x": 1, "value": 10 },
+//   { "x": 2 },  // New entry with missing value
+//   { "x": 3 },  // New entry with missing value
+//   { "x": 4, "value": 40 }]
+
+
 
 
 
