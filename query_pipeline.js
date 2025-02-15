@@ -511,7 +511,20 @@ db.products.aggregate([
 //   ]
 // }
 ------------------------------------------------------
-8,
+8, collation() for case-insensitive search, sorting, and indexing.
+  
+  db.users.find({ name: "john" });
+  Only matches "john", but not match "John", "JOHN", "jOhN".
+
+  db.users.find({ name: "john" }).collation({ locale: "en", strength: 2 });
+  Matches "john", "John", "JOHN", "jOhN".
+
+  db.users.find().sort({ name: 1 });
+  Default sorting (case-sensitive):
+ [ { "name": "Alice" },{ "name": "Bob" },{ "name": "Zara" },{ "name": "alice" },{ "name": "bob" }]  // Lowercase appears after uppercas
+
+  db.users.find().sort({ name: 1 }).collation({ locale: "en", strength: 2 });
+  [ { "name": "Alice" },{ "name": "alice" },{ "name": "Bob" },{ "name": "bob" },{ "name": "Zara" }]
 ------------------------------------------------------
 9,$sortByCount
 // The $sortByCount stage in MongoDB's aggregation framework is a convenient way to group documents
