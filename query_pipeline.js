@@ -397,7 +397,18 @@ db.numbers.aggregate([
 //   { "x": 2 },  // New entry with missing value
 //   { "x": 3 },  // New entry with missing value
 //   { "x": 4, "value": 40 }]
+________________________________________________________________
+9,exec()
+Where Can You Use .exec()?
+// find()	User.find({ age: 20 }).exec();
+// findOne()	User.findOne({ username: "john" }).exec();
+// updateOne()	User.updateOne({ _id: 1 }, { $set: { age: 25 } }).exec();
+// deleteOne()	User.deleteOne({ username: "john" }).exec();
+// aggregate()	User.aggregate([ { $match: { age: { $gte: 18 } } } ]).exec();
 
+.exec() executes queries as a Promise instead of using callbacks.
+Works with find(), findOne(), updateOne(), deleteOne(), aggregate(), etc.
+Recommended when using async/await for cleaner and more readable code.
 
 
 
