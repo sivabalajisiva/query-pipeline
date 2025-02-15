@@ -525,6 +525,12 @@ db.products.aggregate([
 
   db.users.find().sort({ name: 1 }).collation({ locale: "en", strength: 2 });
   [ { "name": "Alice" },{ "name": "alice" },{ "name": "Bob" },{ "name": "bob" },{ "name": "Zara" }]
+
+db.products.aggregate([
+  { $match: { category: "electronics" } },
+  { $sort: { name: 1 } },
+  { $collation: { locale: "en", strength: 2 } }
+]);
 ------------------------------------------------------
 9,$sortByCount
 // The $sortByCount stage in MongoDB's aggregation framework is a convenient way to group documents
