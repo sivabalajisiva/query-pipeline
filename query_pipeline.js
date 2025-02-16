@@ -261,6 +261,7 @@ db.sales.aggregate([
 ]);
 // [ { "totalRevenue": 5400 }]
 V,Total Quantity Sold for Electronics Only,To calculate the total quantity sold for category: "Electronics":
+// Fewer documents → Faster grouping → Less memory usage.
 db.sales.aggregate([
   {
     $match: { category: "Electronics" }  // Filter for Electronics category
