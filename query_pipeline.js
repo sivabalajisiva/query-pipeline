@@ -514,7 +514,40 @@ db.scores.aggregate([
 When a document’s groupBy field value does not match any range in boundaries, it will be placed into the default bucket.
 If default is not specified, values that don't match any range are excluded from the results.
   
-!,Age Group Categorization
+!,$bucket groups documents into ranges (buckets) based on a numeric or date field.
+It’s great for creating histograms, range-based categorization, and summarizing data.
+  // db.sales.insertMany([
+//   { _id: 1, product: "A", price: 25 },
+//   { _id: 2, product: "B", price: 50 },
+//   { _id: 3, product: "C", price: 75 },
+//   { _id: 4, product: "D", price: 100 },
+//   { _id: 5, product: "E", price: 150 },
+//   { _id: 6, product: "F", price: 200 }]);
+  db.sales.aggregate([
+  {
+    $bucket: {
+      groupBy: "$price",         // Field to group by (must be numeric or date)
+      boundaries: [0, 50, 100, 150], // Range boundaries
+      default: "Other",          // Bucket for values outside boundaries
+      output: {
+        count: { $sum: 1 },      // Count documents in each bucket
+        totalRevenue: { $sum: "$price" } // Sum of prices in each bucket
+      }
+    }
+✅ Explanation:
+1️⃣ groupBy → Groups documents by the price field.
+2️⃣ boundaries → Defines the price ranges (non-overlapping, sorted).
+3️⃣ default → Captures documents where price >= 150.
+4️⃣ output → Defines what each bucket returns:
+Count of documents in the range.
+Sum of prices for each range.
+  
+// [{ "_id": 0, "count": 1, "totalRevenue": 25 },     // 0 <= price < 50
+//   { "_id": 50, "count": 2, "totalRevenue": 125 },   // 50 <= price < 100
+//   { "_id": 100, "count": 1, "totalRevenue": 100 },  // 100 <= price < 150
+//   { "_id": "Other", "count": 2, "totalRevenue": 350 }] // price >= 150
+  
+!!,Age Group Categorization
 // [{ "_id": 1, "name": "John", "age": 15 },
 //   { "_id": 2, "name": "Mary", "age": 25 },
 //   { "_id": 3, "name": "Alex", "age": 35 },
@@ -537,6 +570,35 @@ db.users.aggregate([
 // [{ "_id": 0, "count": 1, "users": ["John"] },
 //   { "_id": 20, "count": 2, "users": ["Mary", "Alex"] },
 //   { "_id": 40, "count": 2, "users": ["Kate", "Emma"] }]
+
+!!!,Age range
+// db.users.insertMany([
+//   { name: "Alice", age: 22 },
+//   { name: "Bob", age: 34 },
+//   { name: "Charlie", age: 45 },
+//   { name: "David", age: 51 },
+//   { name: "Eve", age: 68 },
+//   { name: "Frank", age: 75 }
+// ]);
+const ageBoundaries = [18, 30, 50, 70]; // Age groups
+db.users.aggregate([
+  {
+    $bucket: {
+      groupBy: "$age",
+      boundaries: ageBoundaries,
+      default: "70+",
+      output: {
+        count: { $sum: 1 },
+        averageAge: { $avg: "$age" }
+      }
+    }
+  }
+]);
+// [{ "_id": 18, "count": 1, "averageAge": 22 },
+//   { "_id": 30, "count": 2, "averageAge": 39.5 },
+//   { "_id": 50, "count": 1, "averageAge": 51 },
+//   { "_id": 70+, "count": 2, "averageAge": 71.5 }]
+
 ------------------------------------------------------
 7,$facet
   // [ { "name": "Phone", "category": "Electronics", "price": 800 },
