@@ -98,6 +98,13 @@ db.users.aggregate([
 //{ "_id": 3, "name": "Charlie", "role": "employee" },
 //{ "_id": 4, "name": "David", "role": "admin" }]  
 
+    $nor example
+    $nor matches documents that do NOT satisfy ANY of the specified conditions (opposite of $or).
+    The status is NOT “delivered”.AND the amount is NOT greater than 100.
+    db.orders.aggregate([
+    {$match: {$nor: [{ status: "delivered" },{ amount: { $gt: 100 } }]}}
+    ]);
+
 3.$and
 // [{ "_id": 1, "name": "Alice", "role": "admin", "age": 30 },
 // { "_id": 2, "name": "Bob", "role": "manager", "age": 35 },
@@ -108,6 +115,11 @@ db.users.aggregate([
 ]);  
 // [{ "_id": 4, "name": "David", "role": "admin", "age": 40 }]
 
+      $not example
+      The status is NOT “delivered”.The amount is NOT greater than 100.
+      db.orders.aggregate([
+      {$match: {status: { $not: { $eq: "delivered" } }, amount: { $not: { $gt: 100 } }}}
+      ]);
 -------------------------------------------------------------
 2,$COUNT
 // [
