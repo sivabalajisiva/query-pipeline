@@ -114,12 +114,31 @@ db.users.aggregate([
     { $match: {$and: [{ role: "admin" },{ age: { $gt: 30 } }]}}
 ]);  
 // [{ "_id": 4, "name": "David", "role": "admin", "age": 40 }]
+4.$not
+  The status is NOT “delivered”.The amount is NOT greater than 100.
+  db.orders.aggregate([{$match: {status: { $not: { $eq: "delivered" } }, amount: { $not: { $gt: 100 } }}}]);
 
-      $not example
-      The status is NOT “delivered”.The amount is NOT greater than 100.
-      db.orders.aggregate([
-      {$match: {status: { $not: { $eq: "delivered" } }, amount: { $not: { $gt: 100 } }}}
-      ]);
+ !, // [{ title: "The Great Gatsby", genre: "Fiction" },
+  // { title: "1984", genre: "Dystopian" },
+  // { title: "To Kill a Mockingbird", genre: "Fiction" }]
+  db.books.find({ genre: { $not: { $eq: "Fiction" } } });
+  // [{ title: "1984", genre: "Dystopian" }]
+
+ !!,Exclude Documents Matching a Regular Expression
+ // [{ email: "user1@gmail.com" },
+ //  { email: "user2@yahoo.com" },
+ //  { email: "user3@hotmail.com" }]
+db.emails.find({ email: { $not: /gmail\.com$/ } });
+// [ { email: "user2@yahoo.com" },
+//   { email: "user3@hotmail.com" }]
+
+!!!,You want to find students who do not have a grade of 85:
+  // [{ name: "Alice", grades: [85, 90, 78] },
+  // { name: "Bob", grades: [70, 65, 80] },
+  // { name: "Charlie", grades: [95, 85, 90] }]
+db.students.find({ grades: { $not: { $eq: 85 } } });
+// [{ name: "Bob", grades: [70, 65, 80] }]
+
 -------------------------------------------------------------
 2,$COUNT
 // [
