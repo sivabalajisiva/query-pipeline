@@ -441,15 +441,46 @@ Where Can You Use .exec()?
 .exec() executes queries as a Promise instead of using callbacks.
 Works with find(), findOne(), updateOne(), deleteOne(), aggregate(), etc.
 Recommended when using async/await for cleaner and more readable code.
+______________________________________________________________
+10.$nin    $not+$in=$nin  $not and $in compain panni eluthurathu
+// Good                              // Less ideal
+{ category: { $nin: ['obsolete'] }   { category: { $not: { $in: ['obsolete'] } } }
+  
 
+// Find users whose country is NOT 'USA' or 'Canada'
+!.const users = await User.find({
+  country: {
+    $not: {
+      $in: ['USA', 'Canada']
+    }
+  }
+});
 
+!!,// Find products NOT in these categories
+const products = await db.collection('products').find({
+  category: { $nin: ['electronics', 'furniture'] }
+}).toArray();
 
+!!!.// not using find method must use $match query
+ let storage=["siva","yogesh","alex"]
+ const a=await registerusers.aggregate([
+  {$match:
+    {Name:{
+      $nin:storage
+         }
+    }}
+ ])
 
+!V.// Active users not from banned countries
+await User.find({
+  status: 'active',
+  country: { $nin: bannedCountries }
+});
 
+v.// Find prices not between 10 and 20
+{ price: { $not: { $gt: 10, $lt: 20 } } }
 
-
-
-
+____________________________________________________
 
 
 
